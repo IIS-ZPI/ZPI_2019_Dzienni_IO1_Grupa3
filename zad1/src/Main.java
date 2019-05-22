@@ -13,7 +13,7 @@ public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
         return A + B;
     }
 }
-
+//komentarz1
 interface IArithmeticsAdd {
     double Addition(double A, double B);
 
