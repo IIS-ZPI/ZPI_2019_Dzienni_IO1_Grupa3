@@ -17,6 +17,11 @@ public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
     public double Addition(double A, double B) {
         return A + B;
     }
+
+    @Override
+    double Division(double A, double B) {
+        return A/B;
+    }
 }
 
 /**
@@ -37,7 +42,8 @@ interface IArithmeticsAdd {
 }
 
 interface IArithmeticsDiv{
-    double Division(double A, double B);
+    double Division(double A, double B)
+
 }
 
 
