@@ -1,4 +1,5 @@
 public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
+}
     public static void main(String[] args){
 
         /**
@@ -9,6 +10,7 @@ public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
         System.out.println("Grupa: ZPI_2019_Dzienni_IO1_Grupa3, Rola:Developer, GithubID: pawel10x");
         System.out.println("Grupa: ZPI_2019_Dzienni_IO1_Grupa3, Rola:Testy, Github Id: veraxys");
 
+        System.out.println("Developer Lucat0n zaimplementował interfejs Addition");
     }
 
     @Override
