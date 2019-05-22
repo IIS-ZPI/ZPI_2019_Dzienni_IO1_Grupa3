@@ -16,7 +16,7 @@ public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
 
 interface IArithmeticsAdd {
     double Addition(double A, double B);
-
+    //VERAXYS
     public double Multiplication(double A, double B) {
         return A*B;
     }
@@ -41,3 +41,4 @@ interface IArithmeticsMult
 {
     double Multiplication(double A, double B);
 }
+
