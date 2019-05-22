@@ -14,6 +14,8 @@ public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
     }
 }
 
+//komentarz do kodu
+
 interface IArithmeticsAdd {
     double Addition(double A, double B);
 
