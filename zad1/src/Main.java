@@ -1,5 +1,4 @@
-
-public class Main implements IArithmeticsMult,IArithmeticsAdd{
+public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
     public static void main(String[] args){
 
         System.out.println("Grupa: ZPI_2019_Dzienni_IO1_Grupa3, Rola:Developer, Team Leader: Lucat0n");
@@ -21,7 +20,17 @@ interface IArithmeticsAdd {
     public double Multiplication(double A, double B) {
         return A*B;
     }
+
+    @Override
+    public double Difference(double A, double B) {
+        return A-B;
+    }
 }
+
+
+interface IArithmeticsDiff
+{
+    double Difference(double A, double B);
 
 interface IArithmeticsMult
 {
