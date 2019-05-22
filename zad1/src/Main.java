@@ -25,6 +25,11 @@ interface IArithmeticsAdd {
     public double Difference(double A, double B) {
         return A-B;
     }
+
+}
+
+interface IArithmeticsDiv{
+    double Division(double A, double B);
 }
 
 
