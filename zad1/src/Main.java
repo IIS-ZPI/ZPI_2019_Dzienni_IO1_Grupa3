@@ -5,7 +5,7 @@ public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
         System.out.println("Grupa: ZPI_2019_Dzienni_IO1_Grupa3, Rola:Operations, Team Leader: 209450");
         System.out.println("Grupa: ZPI_2019_Dzienni_IO1_Grupa3, Rola:Developer, GithubID: pawel10x");
         System.out.println("Grupa: ZPI_2019_Dzienni_IO1_Grupa3, Rola:Testy, Github Id: veraxys");
-        //Komentarz4
+
     }
 
     @Override
@@ -13,10 +13,10 @@ public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
         return A + B;
     }
 }
-//komentarz1
+
 interface IArithmeticsAdd {
     double Addition(double A, double B);
-
+    //VERAXYS
     public double Multiplication(double A, double B) {
         return A*B;
     }
@@ -32,7 +32,7 @@ interface IArithmeticsDiv{
     double Division(double A, double B);
 }
 
-//Komentarz2
+
 interface IArithmeticsDiff
 {
     double Difference(double A, double B);
@@ -42,4 +42,3 @@ interface IArithmeticsMult
     double Multiplication(double A, double B);
 }
 
-//komentarz3
