@@ -32,7 +32,7 @@ interface IArithmeticsDiv{
     double Division(double A, double B);
 }
 
-
+//Komentarz2
 interface IArithmeticsDiff
 {
     double Difference(double A, double B);
