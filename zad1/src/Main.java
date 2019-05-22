@@ -24,6 +24,8 @@ public class Main implements IArithmeticsMult,IArithmeticsAdd,IArithmeticsDiff{
     }
 }
 
+//komentarz do kodu
+
 /**
  * Interfejs do dodawania liczb
  */
