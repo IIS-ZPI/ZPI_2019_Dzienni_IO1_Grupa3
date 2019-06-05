@@ -4,4 +4,4 @@ java:
   - 11
 
 script:
-  - mvn test
+  - zad2/mvn test
