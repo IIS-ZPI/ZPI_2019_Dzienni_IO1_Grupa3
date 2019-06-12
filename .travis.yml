@@ -5,3 +5,11 @@ java:
 
 script:
   - zad2/mvn test
+
+deploy:
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file: zad2/
+  skip_cleanup: true
+  on:
+    tags: true
