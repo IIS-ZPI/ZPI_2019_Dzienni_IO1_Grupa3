@@ -1,6 +1,6 @@
 import org.json.simple.JSONObject;
 
-public class Main {
+public class Project {
 
     public static void main(String[] args) {
         JSONReader jsonReader = new JSONReader();
