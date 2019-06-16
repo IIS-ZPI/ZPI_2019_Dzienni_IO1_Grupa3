@@ -1,47 +1,27 @@
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URL;
-import java.nio.charset.Charset;
 
-public class JsonReader {
 
-    private static String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
-        }
-        return sb.toString();
+public class JSONReader  {
+
+
+    public JSONReader() {
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
+    public JSONObject parseJSON(String json){
+        Object obj = null;
         try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
-            return json;
-        } finally {
-            is.close();
+            obj = new JSONParser().parse(new FileReader(json));
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
         }
-    }
 
-    public static void main(String[] args) throws IOException, JSONException {
-        JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/c/usd/?format=json");
-        System.out.println(json.get("currency"));
-        System.out.println(json.get("code"));
-        JSONArray jsonarray = (JSONArray) json.getJSONArray("rates");
-        JSONObject rates=(JSONObject) jsonarray.getJSONObject(0);
-        System.out.println(rates.get("no"));
-        System.out.println(rates.get("effectiveDate"));
-        System.out.println(rates.get("bid"));
-        System.out.println(rates.get("ask"));
+        return (JSONObject) obj;
     }
 }
