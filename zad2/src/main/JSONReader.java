@@ -10,7 +10,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-public class JsonReader {
+public class JSONReader {
 
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
