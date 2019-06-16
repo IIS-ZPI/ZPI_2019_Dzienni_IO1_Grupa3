@@ -4,10 +4,11 @@ java:
   - 11
   
  before_script: 
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - cd zad2
 
 script:
-  - mvn test
+  - mvn test -B
 
 deploy:
   provider: releases
