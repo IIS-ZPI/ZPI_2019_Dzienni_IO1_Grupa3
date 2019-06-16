@@ -1,9 +1,11 @@
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class JSONReaderTest {
     @Test
@@ -15,6 +17,8 @@ class JSONReaderTest {
             assertEquals("USD", jo.get("code"));
         }catch(IOException ioe){
             fail("JSON nie pobrał/otworzył się poprawnie");
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
