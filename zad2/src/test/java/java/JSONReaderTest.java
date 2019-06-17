@@ -1,11 +1,10 @@
+package java;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.testng.AssertJUnit.assertEquals;
 
 class JSONReaderTest {
     @Test
@@ -15,8 +14,6 @@ class JSONReaderTest {
             JSONObject jo = jsonReader.readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/c/usd/?format=json");
             assertEquals("dolar amerykański", jo.get("currency"));
             assertEquals("USD", jo.get("code"));
-        }catch(IOException ioe){
-            fail("JSON nie pobrał/otworzył się poprawnie");
         } catch (JSONException e) {
             e.printStackTrace();
         }
