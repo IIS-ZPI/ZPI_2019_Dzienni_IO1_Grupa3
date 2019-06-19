@@ -5,7 +5,7 @@ java:
   
  before_script: 
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-  - cd zad2
+  - cd zad2_poprawione
 
 script:
   - mvn test -B
