@@ -36,7 +36,7 @@ public class JSONReader {
     }
 
     public static void main(String[] args) throws IOException, JSONException {
-        JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/c/usd/?format=json");
+        /*JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/c/usd/?format=json");
         System.out.println(json.get("currency"));
         System.out.println(json.get("code"));
         JSONArray jsonarray = (JSONArray) json.get("rates");
@@ -44,6 +44,31 @@ public class JSONReader {
         System.out.println(rates.get("no"));
         System.out.println(rates.get("effectiveDate"));
         System.out.println(rates.get("bid"));
-        System.out.println(rates.get("ask"));
+        System.out.println(rates.get("ask"));*/
+
+        /*System.out.println(getValue('A',"usd"));
+        System.out.println(getValue('B',"usd"));
+        System.out.println(getValue('C',"usd"));*/
+    }
+
+    public static double getValue(char table, String currency) throws IOException, JSONException {
+        String valueInString;
+        double value = 0;
+        JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/?format=json");
+        JSONArray jsonarray = (JSONArray) json.get("rates");
+        JSONObject rates=(JSONObject) jsonarray.getJSONObject(0);
+        if(table=='A' || table=='B')
+        {
+            valueInString = rates.get("mid").toString();
+            value = Double.parseDouble(valueInString);
+        }
+        if(table=='C')
+        {
+            valueInString = rates.get("bid").toString();
+            value = Double.parseDouble(valueInString);
+            valueInString = rates.get("ask").toString();
+            value = (value + Double.parseDouble(valueInString))/2;
+        }
+        return value;
     }
 }
