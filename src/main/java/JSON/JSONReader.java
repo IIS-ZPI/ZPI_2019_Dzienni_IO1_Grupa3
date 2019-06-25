@@ -51,6 +51,9 @@ public class JSONReader {
         System.out.println(getValue('B',"usd"));
         System.out.println(getValue('C',"usd"));*/
         //System.out.println(getValues('A',"usd","JedenRok").length);
+        /*System.out.println(calculateGrowthSession('A',"usd","JedenTydzien"));
+        System.out.println(calculateDownwardSession('A',"usd","JedenTydzien"));
+        System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));*/
     }
 
     public static double getValue(char table, String currency) throws IOException, JSONException {
@@ -241,5 +244,56 @@ public class JSONReader {
         }
 
         return value;
+    }
+
+    public static int calculateGrowthSession(char table, String currency, String period ) throws IOException {
+
+        int sessionAmount = 0;
+
+        double[] value = getValues(table, currency, period);
+
+        for(int index=0;index<value.length-1;index++)
+        {
+            if(value[index+1]>value[index])
+            {
+                sessionAmount++;
+            }
+        }
+
+        return  sessionAmount;
+    }
+
+    public static int calculateDownwardSession(char table, String currency, String period ) throws IOException {
+
+        int sessionAmount = 0;
+
+        double[] value = getValues(table, currency, period);
+
+        for(int index=0;index<value.length-1;index++)
+        {
+            if(value[index+1]<value[index])
+            {
+                sessionAmount++;
+            }
+        }
+
+        return  sessionAmount;
+    }
+
+    public static int calculateUnchangedSession(char table, String currency, String period ) throws IOException {
+
+        int sessionAmount = 0;
+
+        double[] value = getValues(table, currency, period);
+
+        for(int index=0;index<value.length-1;index++)
+        {
+            if(value[index+1]==value[index])
+            {
+                sessionAmount++;
+            }
+        }
+
+        return  sessionAmount;
     }
 }
