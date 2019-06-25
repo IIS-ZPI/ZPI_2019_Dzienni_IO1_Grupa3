@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 
 public class JSONReader {
@@ -54,6 +55,7 @@ public class JSONReader {
         /*System.out.println(calculateGrowthSession('A',"usd","JedenTydzien"));
         System.out.println(calculateDownwardSession('A',"usd","JedenTydzien"));
         System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));*/
+        //System.out.println(calculateMedian('A',"usd","JedenTydzien"));
     }
 
     public static double getValue(char table, String currency) throws IOException, JSONException {
@@ -295,5 +297,19 @@ public class JSONReader {
         }
 
         return  sessionAmount;
+    }
+
+    public static double calculateMedian(char table, String currency, String period)throws IOException {
+
+        double[] value = getValues(table, currency, period);
+        Arrays.sort(value);
+
+        int middle = value.length/2;
+        if (value.length%2 == 1) {
+            return value[middle];
+        } else {
+            return (value[middle-1] + value[middle]) / 2.0;
+        }
+
     }
 }
