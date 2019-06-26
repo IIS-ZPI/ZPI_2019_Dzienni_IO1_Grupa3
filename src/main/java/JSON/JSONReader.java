@@ -57,7 +57,7 @@ public class JSONReader {
         System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));
         //System.out.println(calculateMedian('A',"usd","JedenTydzien"));
         //System.out.println(calculateDominant('A',"usd","JedenMiesiac"));
-        //System.out.println(calculateStdDev('A',"usd","JedenMiesiac"));
+        System.out.println(calculateStdDev('A',"usd","JedenMiesiac"));
         //System.out.println(calculateVariationCoefficient('A',"usd","JedenMiesiac"));*/
     }
 
@@ -88,30 +88,30 @@ public class JSONReader {
         double[] value = new double[365];
 
         switch(period) {
-            case "JedenTydzien":
+            case "Jeden Tydzien":
                 json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(1) + "/" + LocalDate.now() + "/?format=json");
                 value = getDoubles(table, json);
                 break;
 
-            case "DwaTygodnie":
+            case "Dwa Tygodnie":
                 json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(2) + "/" + LocalDate.now() + "/?format=json");
                 value = getDoubles(table, json);
                 break;
 
-            case "JedenMiesiac":
+            case "Jeden Miesiac":
                 json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(1) + "/" + LocalDate.now() + "/?format=json");
                 value = getDoubles(table, json);
                 break;
 
-            case "JedenKwartal":
+            case "Jeden Kwartal":
                 json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(3) + "/" + LocalDate.now() + "/?format=json");
                 value = getDoubles(table, json);
                 break;
-            case "PolRoku":
+            case "Pol Roku":
                 json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(6) + "/" + LocalDate.now() + "/?format=json");
                 value = getDoubles(table, json);
                 break;
-            case "JedenRok":
+            case "Jeden Rok":
                 json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusYears(1) + "/" + LocalDate.now() + "/?format=json");
                 value = getDoubles(table, json);
                 break;
@@ -120,7 +120,7 @@ public class JSONReader {
         return value;
     }
 
-    private static double[] getDoubles(char table, JSONObject json) {
+    private static double[] getDoubles(char table, JSONObject json) throws JSONException {
         double[] value;
         String valueInString;
         JSONArray jsonarray = (JSONArray) json.get("rates");
@@ -209,7 +209,7 @@ public class JSONReader {
 
     }
 
-    public static double calculateDominant(char table, String currency, String period) throws IOException{
+    public static double calculateDominant(char table, String currency, String period) throws IOException, JSONException {
 
         double[] value = getValues(table, currency, period);
 
@@ -238,7 +238,7 @@ public class JSONReader {
         return sum / m.length;
     }
 
-    public static double calculateStdDev(char table, String currency, String period) throws IOException {
+    public static double calculateStdDev(char table, String currency, String period) throws IOException, JSONException {
         double[] value = getValues(table, currency, period);
         double mean = calculateMean(value);
         double temp = 0;
@@ -247,7 +247,7 @@ public class JSONReader {
         return Math.sqrt(temp/(value.length-1));
     }
 
-    public static double calculateVariationCoefficient(char table, String currency, String period) throws IOException {
+    public static double calculateVariationCoefficient(char table, String currency, String period) throws IOException, JSONException {
         double[] value = getValues(table, currency, period);
         double stdDev = calculateStdDev(table, currency, period);
         double mean = calculateMean(value);
