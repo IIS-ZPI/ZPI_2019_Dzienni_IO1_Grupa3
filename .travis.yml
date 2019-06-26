@@ -1,0 +1,14 @@
+language: java
+
+java:
+  - 8
+
+deploy:
+  provider: releases
+  api_key: grupa3
+  #file: "FILE TO UPLOAD"
+  skip_cleanup: true
+  on:
+    branch: Release
+    tags: true
+  
