@@ -23,36 +23,36 @@ public class JSONReaderTest {
             e.printStackTrace();
         }
     }
-    @Test public void getValue() throws IOException {
+    @Test public void getValue() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
         assertEquals(3.754, jsonReader.getValue('A',"usd"),DELTA);
         assertEquals(4.011, jsonReader.getValue('B',"usd"),DELTA);
         assertEquals(3.7357, jsonReader.getValue('C',"usd"),DELTA);
     }
 
-    @Test public void getValues() throws IOException {
+    @Test public void getValues() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(253, jsonReader.getValues('A',"usd","JedenRok").length,DELTA);
+        assertEquals(253, jsonReader.getValues('A',"usd","Jeden Rok").length,DELTA);
     }
 
-    @Test public void calculateGrowthSession() throws IOException {
+    @Test public void calculateGrowthSession() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(2, jsonReader.calculateGrowthSession('A',"usd","JedenTydzien"),DELTA);
+        assertEquals(2, jsonReader.calculateGrowthSession('A',"usd","Jeden Tydzien"),DELTA);
     }
 
-    @Test public void calculateDownwardSession() throws IOException {
+    @Test public void calculateDownwardSession() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(2, jsonReader.calculateDownwardSession('A',"usd","JedenTydzien"),DELTA);
+        assertEquals(2, jsonReader.calculateDownwardSession('A',"usd","Jeden Tydzien"),DELTA);
     }
 
-    @Test public void calculateUnchangedSession() throws IOException {
+    @Test public void calculateUnchangedSession() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(2, jsonReader.calculateUnchangedSession('A',"usd","JedenRok"),DELTA);
+        assertEquals(2, jsonReader.calculateUnchangedSession('A',"usd","Jeden Rok"),DELTA);
     }
 
-    @Test public void calculateMedian() throws IOException {
+    @Test public void calculateMedian() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(3.754, jsonReader.calculateMedian('A',"usd","JedenTydzien"),DELTA);
+        assertEquals(3.754, jsonReader.calculateMedian('A',"usd","Jeden Tydzien"),DELTA);
     }
 
 }
