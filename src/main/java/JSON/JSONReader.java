@@ -1,12 +1,10 @@
 package JSON;
 
 
-
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import java.io.*;
 import java.net.URL;
@@ -48,14 +46,14 @@ public class JSONReader {
         System.out.println(rates.get("bid"));
         System.out.println(rates.get("ask"));*/
 
-        /*System.out.println(getValue('A',"usd"));
+        System.out.println(getValue('A',"usd"));
         System.out.println(getValue('B',"usd"));
-        System.out.println(getValue('C',"usd"));*/
-        //System.out.println(getValues('A',"usd","JedenRok").length);
-        /*System.out.println(calculateGrowthSession('A',"usd","JedenTydzien"));
+        System.out.println(getValue('C',"usd"));
+        System.out.println(getValues('A',"usd","JedenRok").length);
+        System.out.println(calculateGrowthSession('A',"usd","JedenTydzien"));
         System.out.println(calculateDownwardSession('A',"usd","JedenTydzien"));
-        System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));*/
-        //System.out.println(calculateMedian('A',"usd","JedenTydzien"));
+        System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));
+        System.out.println(calculateMedian('A',"usd","JedenTydzien"));
     }
 
     public static double getValue(char table, String currency) throws IOException, JSONException {
