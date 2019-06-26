@@ -58,6 +58,7 @@ public class JSONReader {
         //System.out.println(calculateMedian('A',"usd","JedenTydzien"));
         //System.out.println(calculateDominant('A',"usd","JedenMiesiac"));
         //System.out.println(calculateStdDev('A',"usd","JedenMiesiac"));
+        //System.out.println(calculateVariationCoefficient('A',"usd","JedenMiesiac"));
     }
 
     public static double getValue(char table, String currency) throws IOException, JSONException {
@@ -328,5 +329,12 @@ public class JSONReader {
         for(double a :value)
             temp += (a-mean)*(a-mean);
         return Math.sqrt(temp/(value.length-1));
+    }
+
+    public static double calculateVariationCoefficient(char table, String currency, String period) throws IOException {
+        double[] value = getValues(table, currency, period);
+        double stdDev = calculateStdDev(table, currency, period);
+        double mean = calculateMean(value);
+        return stdDev/mean;
     }
 }
