@@ -248,7 +248,7 @@ public class JSONReader {
         return value;
     }
 
-    public static int calculateGrowthSession(char table, String currency, String period ) throws IOException {
+    public static int calculateGrowthSession(char table, String currency, String period ) throws IOException, JSONException {
 
         int sessionAmount = 0;
 
@@ -265,7 +265,7 @@ public class JSONReader {
         return  sessionAmount;
     }
 
-    public static int calculateDownwardSession(char table, String currency, String period ) throws IOException {
+    public static int calculateDownwardSession(char table, String currency, String period ) throws IOException, JSONException {
 
         int sessionAmount = 0;
 
@@ -282,7 +282,7 @@ public class JSONReader {
         return  sessionAmount;
     }
 
-    public static int calculateUnchangedSession(char table, String currency, String period ) throws IOException {
+    public static int calculateUnchangedSession(char table, String currency, String period ) throws IOException, JSONException {
 
         int sessionAmount = 0;
 
@@ -299,7 +299,7 @@ public class JSONReader {
         return  sessionAmount;
     }
 
-    public static double calculateMedian(char table, String currency, String period)throws IOException {
+    public static double calculateMedian(char table, String currency, String period) throws IOException, JSONException {
 
         double[] value = getValues(table, currency, period);
         Arrays.sort(value);
