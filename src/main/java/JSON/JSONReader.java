@@ -80,171 +80,64 @@ public class JSONReader {
     }
 
     public static double[] getValues(char table, String currency, String period) throws IOException, JSONException {
-        String valueInString;
         LocalDate.now();
+        JSONObject json;
         double[] value = new double[365];
 
-        if(period=="JedenTydzien")
-        {
-            JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusWeeks(1)+"/"+LocalDate.now()+"/?format=json");
-            JSONArray jsonarray = (JSONArray) json.get("rates");
-            value = new double[jsonarray.length()];
-            for(int index=0; index<jsonarray.length(); index++)
-            {
-                JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
-                if(table=='A' || table=='B')
-                {
-                    valueInString = rates.get("mid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                }
-                if(table=='C')
-                {
-                    valueInString = rates.get("bid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                    valueInString = rates.get("ask").toString();
-                    value[index] = (value[index] + Double.parseDouble(valueInString))/2;
-                }
-            }
+        switch(period) {
+            case "JedenTydzien":
+                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(1) + "/" + LocalDate.now() + "/?format=json");
+                value = getDoubles(table, json);
+                break;
+
+            case "DwaTygodnie":
+                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(2) + "/" + LocalDate.now() + "/?format=json");
+                value = getDoubles(table, json);
+                break;
+
+            case "JedenMiesiac":
+                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(1) + "/" + LocalDate.now() + "/?format=json");
+                value = getDoubles(table, json);
+                break;
+
+            case "JedenKwartal":
+                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(3) + "/" + LocalDate.now() + "/?format=json");
+                value = getDoubles(table, json);
+                break;
+            case "PolRoku":
+                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(6) + "/" + LocalDate.now() + "/?format=json");
+                value = getDoubles(table, json);
+                break;
+            case "JedenRok":
+                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusYears(1) + "/" + LocalDate.now() + "/?format=json");
+                value = getDoubles(table, json);
+                break;
         }
 
-        if(period=="DwaTygodnie")
+        return value;
+    }
+
+    private static double[] getDoubles(char table, JSONObject json) {
+        double[] value;
+        String valueInString;
+        JSONArray jsonarray = (JSONArray) json.get("rates");
+        value = new double[jsonarray.length()];
+        for(int index=0; index<jsonarray.length(); index++)
         {
-            JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusWeeks(2)+"/"+LocalDate.now()+"/?format=json");
-            JSONArray jsonarray = (JSONArray) json.get("rates");
-            value = new double[jsonarray.length()];
-            for(int index=0; index<jsonarray.length(); index++)
+            JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
+            if(table=='A' || table=='B')
             {
-                JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
-                if(table=='A' || table=='B')
-                {
-                    valueInString = rates.get("mid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                }
-                if(table=='C')
-                {
-                    valueInString = rates.get("bid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                    valueInString = rates.get("ask").toString();
-                    value[index] = (value[index] + Double.parseDouble(valueInString))/2;
-                }
+                valueInString = rates.get("mid").toString();
+                value[index] = Double.parseDouble(valueInString);
+            }
+            if(table=='C')
+            {
+                valueInString = rates.get("bid").toString();
+                value[index] = Double.parseDouble(valueInString);
+                valueInString = rates.get("ask").toString();
+                value[index] = (value[index] + Double.parseDouble(valueInString))/2;
             }
         }
-
-        if(period=="JedenMiesiac")
-        {
-            JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusMonths(1)+"/"+LocalDate.now()+"/?format=json");
-            JSONArray jsonarray = (JSONArray) json.get("rates");
-            value = new double[jsonarray.length()];
-            for(int index=0; index<jsonarray.length(); index++)
-            {
-                JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
-                if(table=='A' || table=='B')
-                {
-                    valueInString = rates.get("mid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                }
-                if(table=='C')
-                {
-                    valueInString = rates.get("bid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                    valueInString = rates.get("ask").toString();
-                    value[index] = (value[index] + Double.parseDouble(valueInString))/2;
-                }
-            }
-        }
-
-        if(period=="JedenMiesiac")
-        {
-            JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusMonths(1)+"/"+LocalDate.now()+"/?format=json");
-            JSONArray jsonarray = (JSONArray) json.get("rates");
-            value = new double[jsonarray.length()];
-            for(int index=0; index<jsonarray.length(); index++)
-            {
-                JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
-                if(table=='A' || table=='B')
-                {
-                    valueInString = rates.get("mid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                }
-                if(table=='C')
-                {
-                    valueInString = rates.get("bid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                    valueInString = rates.get("ask").toString();
-                    value[index] = (value[index] + Double.parseDouble(valueInString))/2;
-                }
-            }
-        }
-
-        if(period=="JedenKwartal")
-        {
-            JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusMonths(3)+"/"+LocalDate.now()+"/?format=json");
-            JSONArray jsonarray = (JSONArray) json.get("rates");
-            value = new double[jsonarray.length()];
-            for(int index=0; index<jsonarray.length(); index++)
-            {
-                JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
-                if(table=='A' || table=='B')
-                {
-                    valueInString = rates.get("mid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                }
-                if(table=='C')
-                {
-                    valueInString = rates.get("bid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                    valueInString = rates.get("ask").toString();
-                    value[index] = (value[index] + Double.parseDouble(valueInString))/2;
-                }
-            }
-        }
-
-        if(period=="PolRoku")
-        {
-            JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusMonths(6)+"/"+LocalDate.now()+"/?format=json");
-            JSONArray jsonarray = (JSONArray) json.get("rates");
-            value = new double[jsonarray.length()];
-            for(int index=0; index<jsonarray.length(); index++)
-            {
-                JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
-                if(table=='A' || table=='B')
-                {
-                    valueInString = rates.get("mid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                }
-                if(table=='C')
-                {
-                    valueInString = rates.get("bid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                    valueInString = rates.get("ask").toString();
-                    value[index] = (value[index] + Double.parseDouble(valueInString))/2;
-                }
-            }
-        }
-
-        if(period=="JedenRok")
-        {
-            JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusYears(1)+"/"+LocalDate.now()+"/?format=json");
-            JSONArray jsonarray = (JSONArray) json.get("rates");
-            value = new double[jsonarray.length()];
-            for(int index=0; index<jsonarray.length(); index++)
-            {
-                JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
-                if(table=='A' || table=='B')
-                {
-                    valueInString = rates.get("mid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                }
-                if(table=='C')
-                {
-                    valueInString = rates.get("bid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                    valueInString = rates.get("ask").toString();
-                    value[index] = (value[index] + Double.parseDouble(valueInString))/2;
-                }
-            }
-        }
-
         return value;
     }
 
