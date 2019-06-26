@@ -54,11 +54,11 @@ public class JSONReader {
         //System.out.println(getValues('A',"usd","JedenRok").length);
         /*System.out.println(calculateGrowthSession('A',"usd","JedenTydzien"));
         System.out.println(calculateDownwardSession('A',"usd","JedenTydzien"));
-        System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));
-        //System.out.println(calculateMedian('A',"usd","JedenTydzien"));
-        //System.out.println(calculateDominant('A',"usd","JedenMiesiac"));
-        //System.out.println(calculateStdDev('A',"usd","JedenMiesiac"));
-        //System.out.println(calculateVariationCoefficient('A',"usd","JedenMiesiac"));*/
+        System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));*/
+        System.out.println(calculateMedian('A',"usd","JedenTydzien"));
+        System.out.println(calculateDominant('A',"usd","JedenMiesiac"));
+        System.out.println(calculateStdDev('A',"usd","JedenMiesiac"));
+        System.out.println(calculateVariationCoefficient('A',"usd","JedenMiesiac"));
     }
 
     public static double getValue(char table, String currency) throws IOException, JSONException {
