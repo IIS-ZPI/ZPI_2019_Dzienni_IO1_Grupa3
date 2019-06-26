@@ -1,6 +1,6 @@
 package GUI;
 
-import javafx.fxml.FXML;
+/*import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.ComboBox;
 
@@ -15,4 +15,4 @@ public class Controller {
     private ComboBox periodComboBox;
 
 
-}
+}*/
