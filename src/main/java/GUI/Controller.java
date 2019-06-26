@@ -6,6 +6,10 @@ import JSON.JSONReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
@@ -13,6 +17,8 @@ import org.json.JSONException;
 
 import java.io.IOException;
 
+
+import javax.swing.*;
 
 public class Controller {
     @FXML
@@ -25,6 +31,7 @@ public class Controller {
     private ComboBox periodComboBox;
     @FXML
     private ComboBox analysysValueComboBox;
+
     @FXML
     private ComboBox groupComboBox;
     @FXML
@@ -243,7 +250,9 @@ public class Controller {
         analysysValueComboBox.setVisible(true);
         valueLabel.setVisible(true);
 
-    }
 
+
+
+    }
 
 }
