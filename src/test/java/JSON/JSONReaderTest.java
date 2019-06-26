@@ -55,4 +55,19 @@ public class JSONReaderTest {
         assertEquals(3.754, jsonReader.calculateMedian('A',"usd","JedenTydzien"),DELTA);
     }
 
+    @Test public void calculateDominant() throws IOException {
+        JSONReader jsonReader = new JSONReader();
+        assertEquals(3.8374, jsonReader.calculateDominant('A',"usd","JedenMiesiac"),DELTA);
+    }
+
+    @Test public void calculateStdDev() throws IOException {
+        JSONReader jsonReader = new JSONReader();
+        assertEquals(0.03629084294123354, jsonReader.calculateStdDev('A',"usd","JedenMiesiac"),DELTA);
+    }
+
+    @Test public void calculateVariationCoefficient() throws IOException {
+        JSONReader jsonReader = new JSONReader();
+        assertEquals(0.0095573555465699, jsonReader.calculateVariationCoefficient('A',"usd","JedenMiesiac"),DELTA);
+    }
+
 }
