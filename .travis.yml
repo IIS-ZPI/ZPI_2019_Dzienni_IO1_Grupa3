@@ -2,17 +2,13 @@ language: java
 
 java:
   - 8
+
+deploy:
+  provider: releases
+  api_key: grupa3
+  #file: "FILE TO UPLOAD"
+  skip_cleanup: true
+  on:
+    branch: Release
+    tags: true
   
-#  before_script: 
-#   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-
-# script:
-#   - mvn test -B
-
-# deploy:
-#   provider: releases
-#   api_key: "GITHUB OAUTH TOKEN"
-#   file: zad2/
-#   skip_cleanup: true
-#   on:
-#     tags: true
