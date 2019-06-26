@@ -56,6 +56,7 @@ public class JSONReader {
         System.out.println(calculateDownwardSession('A',"usd","JedenTydzien"));
         System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));*/
         //System.out.println(calculateMedian('A',"usd","JedenTydzien"));
+        //System.out.println(calculateDominant('A',"usd","JedenMiesiac"));
     }
 
     public static double getValue(char table, String currency) throws IOException, JSONException {
@@ -110,29 +111,6 @@ public class JSONReader {
         if(period=="DwaTygodnie")
         {
             JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusWeeks(2)+"/"+LocalDate.now()+"/?format=json");
-            JSONArray jsonarray = (JSONArray) json.get("rates");
-            value = new double[jsonarray.length()];
-            for(int index=0; index<jsonarray.length(); index++)
-            {
-                JSONObject rates=(JSONObject) jsonarray.getJSONObject(index);
-                if(table=='A' || table=='B')
-                {
-                    valueInString = rates.get("mid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                }
-                if(table=='C')
-                {
-                    valueInString = rates.get("bid").toString();
-                    value[index] = Double.parseDouble(valueInString);
-                    valueInString = rates.get("ask").toString();
-                    value[index] = (value[index] + Double.parseDouble(valueInString))/2;
-                }
-            }
-        }
-
-        if(period=="JedenMiesiac")
-        {
-            JSONObject json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/"+table+"/"+currency+ "/"+ LocalDate.now().minusMonths(1)+"/"+LocalDate.now()+"/?format=json");
             JSONArray jsonarray = (JSONArray) json.get("rates");
             value = new double[jsonarray.length()];
             for(int index=0; index<jsonarray.length(); index++)
@@ -311,5 +289,26 @@ public class JSONReader {
             return (value[middle-1] + value[middle]) / 2.0;
         }
 
+    }
+
+    public static double calculateDominant(char table, String currency, String period) throws IOException{
+
+        double[] value = getValues(table, currency, period);
+
+        double maxValue = 0;
+        int maxCount = 0;
+
+        for (int i = 0; i < value.length; ++i) {
+            int count = 0;
+            for (int j = 0; j < value.length; ++j) {
+                if (value[j] == value[i]) ++count;
+            }
+            if (count > maxCount) {
+                maxCount = count;
+                maxValue = value[i];
+            }
+        }
+
+        return maxValue;
     }
 }
