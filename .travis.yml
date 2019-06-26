@@ -1,21 +1,21 @@
 language: java
 
 java:
-  - 11
+  - 8
   
- before_script: 
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+#  before_script: 
+#   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
-script:
-  - mvn test -B
+# script:
+#   - mvn test -B
 
-deploy:
-  provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
-  file: zad2/
-  skip_cleanup: true
-  on:
-    tags: true
+# deploy:
+#   provider: releases
+#   api_key: "GITHUB OAUTH TOKEN"
+#   file: zad2/
+#   skip_cleanup: true
+#   on:
+#     tags: true
 
 
 
