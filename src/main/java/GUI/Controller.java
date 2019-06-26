@@ -7,31 +7,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import org.json.JSONException;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.IOException;
-
-
-import javax.swing.*;
 
 public class Controller {
     @FXML
     private ComboBox currencyComboBox;
     @FXML
-    private BarChart barChart;
+    private LineChart lineChart;
     @FXML
     private ComboBox analysysComboBox;
     @FXML
     private ComboBox periodComboBox;
     @FXML
     private ComboBox analysysValueComboBox;
-
+    @FXML
+    private Button clearLineChart;
     @FXML
     private ComboBox groupComboBox;
     @FXML
@@ -46,6 +44,11 @@ public class Controller {
     private Button showButton;
     @FXML
     private TextField answerTextField;
+    @FXML
+    private CategoryAxis xAxis ;
+    @FXML
+    private NumberAxis yAxis ;
+
 
     private char table;
     private String currency;
@@ -82,10 +85,10 @@ public class Controller {
             options.setAll("Wzrostowych", "Spadkowych", "Bez zmian");
         }
         if (analysysComboBox.getValue().equals("Rozkład zmian")) {
-            options.setAll("Dominanta", "Mediana", "Odchylenie standardowe", "Współczynnik zmienności");
+            options.setAll("Miesięcznych","Kwartalnych");
         }
         if (analysysComboBox.getValue().equals("Miary statyczne")) {
-            options.setAll("Miesięcznych", "Kwartalnych");
+            options.setAll("Dominanta", "Mediana", "Odchylenie standardowe", "Współczynnik zmienności");
         }
         analysysValueComboBox.setItems(options);
         analysysValueComboBox.setOnAction(event -> {
@@ -100,7 +103,6 @@ public class Controller {
         makeCurencyComboBoxVisible();
         ObservableList<String> options =
                     FXCollections.observableArrayList(
-                            "pln",
                             "eur",
                             "usd"
                     );
@@ -139,7 +141,7 @@ public class Controller {
         groupComboBox.setOnAction(event -> {
             try {
                 showButtonClicked();
-            } catch (IOException e) {
+            }  catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -151,6 +153,7 @@ public class Controller {
 
     private void showButtonClicked() throws IOException, JSONException {
         showButton.setVisible(true);
+        showGraph();
         if(analysysComboBox.getValue().equals("Wyznaczenie ilości sesji")){
             calculateSession();
 
@@ -174,22 +177,22 @@ public class Controller {
         period = (String) periodComboBox.getValue();
         double sessionAmount = 0;
 
-        if (analysysValueComboBox.getValue().equals("Dominanta")){
-            sessionAmount = JSONReader.calculateDominant(table,currency,period);
-        }if(analysysValueComboBox.getValue().equals("Mediana")){
-            sessionAmount =  JSONReader.calculateMedian(table,currency,period);
-        }if(analysysValueComboBox.getValue().equals("Odchylenie standardowe")){
-            sessionAmount =  JSONReader.calculateStdDev(table,currency,period);
-        }if(analysysValueComboBox.getValue().equals("Współczynnik zmienności")){
-            sessionAmount =  JSONReader.calculateVariationCoefficient(table,currency,period);
-        }
-        answerTextField.setText(String.valueOf(sessionAmount));
+             if (analysysValueComboBox.getValue().equals("Dominanta")) {
+                sessionAmount = JSONReader.calculateDominant(table, currency, period);
+            }
+            if (analysysValueComboBox.getValue().equals("Mediana")) {
+                sessionAmount = JSONReader.calculateMedian(table, currency, period);
+            }
+            if (analysysValueComboBox.getValue().equals("Odchylenie standardowe")) {
+                sessionAmount = JSONReader.calculateStdDev(table, currency, period);
+            }
+            if (analysysValueComboBox.getValue().equals("Współczynnik zmienności")) {
+                sessionAmount = JSONReader.calculateVariationCoefficient(table, currency, period);
+            }
+            answerTextField.setText(String.valueOf(sessionAmount));
 
     }
 
-    private void showAnswerTextField(){
-        answerTextField.setVisible(true);
-    }
 
     private void calculateSession() throws IOException, JSONException {
         String tableValue = (String) groupComboBox.getValue();
@@ -200,8 +203,10 @@ public class Controller {
 
         if (analysysValueComboBox.getValue().equals("Wzrostowych")){
             sessionAmount = JSONReader.calculateGrowthSession(table,currency,period);
+
         }if(analysysValueComboBox.getValue().equals("Spadkowych")){
             sessionAmount =  JSONReader.calculateDownwardSession(table,currency,period);
+
         }if(analysysValueComboBox.getValue().equals("Bez zmian")){
             sessionAmount =  JSONReader.calculateUnchangedSession(table,currency,period);
         }
@@ -211,9 +216,48 @@ public class Controller {
     }
 
 
+    private void showGraph() throws IOException, JSONException {
+        String tableValue = (String) groupComboBox.getValue();
+        table = tableValue.charAt(0);
+        currency = (String) currencyComboBox.getValue();
+        period = (String) periodComboBox.getValue();
+        double[] value = new double[365];
+        value = JSONReader.getValues(table,currency,period);
+        for(int y=0;y<value.length;y++){
+            System.out.println(value[y]);
+        }
+
+        XYChart.Series series = new XYChart.Series();
+        series.setName(tableValue);
+        for(int i = 0;i<value.length;i++){
+            String q = Integer.toString(i);
+            series.getData().add(new XYChart.Data(q,value[i]));
+        }
+       /* series.getData().add(new XYChart.Data("1",13));
+        series.getData().add(new XYChart.Data("2",20));
+        series.getData().add(new XYChart.Data("3",17));
+        series.getData().add(new XYChart.Data("4",19));
+*/
+        lineChart.getData().addAll(series);
+
+
+
+    }
+
+    @FXML
+    private void clearLineChart(ActionEvent event){
+
+        lineChart.getData().clear();
+
+    }
+
     private void calculateChange() {
     }
 
+
+    private void showAnswerTextField(){
+        answerTextField.setVisible(true);
+    }
 
 
     private void makeGroupComboBoxVisible() {
