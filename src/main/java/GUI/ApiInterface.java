@@ -13,6 +13,7 @@ public class ApiInterface extends Application {
 
     public static void main(String[] args) {
         launch(args);
+
     }
 
     @Override
@@ -20,6 +21,7 @@ public class ApiInterface extends Application {
         URL url = new File("src/main/java/GUI/sample.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
         primaryStage.setTitle("API");
+
         primaryStage.setScene(new Scene(root, 800, 800));
         primaryStage.show();
     }

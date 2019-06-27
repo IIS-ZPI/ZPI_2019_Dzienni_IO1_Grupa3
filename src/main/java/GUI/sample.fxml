@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="712.0" prefWidth="811.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
    <children>
-      <Label layoutX="497.0" layoutY="86.0" text="Select curency" />
-      <ComboBox fx:id="curencyComboBox" layoutX="600.0" layoutY="82.0" prefWidth="150.0" />
-      <BarChart fx:id="barChart" layoutX="156.0" layoutY="283.0">
+      <Label fx:id="currencyLabel" layoutX="30.0" layoutY="123.0" text="Choose currency" />
+      <ComboBox fx:id="currencyComboBox" layoutX="133.0" layoutY="119.0" prefWidth="150.0" />
+      <Label layoutX="30.0" layoutY="45.0" prefHeight="17.0" prefWidth="89.0" text="Analysys type" />
+      <ComboBox fx:id="analysysComboBox" layoutX="133.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label fx:id="periodLabel" layoutX="30.0" layoutY="159.0" prefHeight="17.0" prefWidth="89.0" text="Choose period" />
+      <ComboBox fx:id="periodComboBox" layoutX="133.0" layoutY="155.0" prefWidth="150.0" />
+      <ComboBox fx:id="analysysValueComboBox" layoutX="133.0" layoutY="83.0" prefWidth="150.0" />
+      <Label fx:id="valueLabel" layoutX="30.0" layoutY="87.0" prefHeight="17.0" prefWidth="89.0" text="Choose Value" />
+      <Button fx:id="showButton" layoutX="238.0" layoutY="234.0" mnemonicParsing="false" text="Show" />
+      <Label fx:id="groupLabel" layoutX="30.0" layoutY="195.0" prefHeight="17.0" prefWidth="89.0" text="Chose group" />
+      <ComboBox fx:id="groupComboBox" layoutX="133.0" layoutY="191.0" prefWidth="150.0" />
+      <TextField fx:id="answerTextField" layoutX="488.0" layoutY="234.0" />
+      <LineChart fx:id="lineChart" layoutX="133.0" layoutY="277.0">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <CategoryAxis animated="false" side="BOTTOM" fx:id="xAxis" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis fx:id="yAxis" animated="false" side="LEFT" />
         </yAxis>
-      </BarChart>
-      <Label layoutX="497.0" layoutY="46.0" text="Analysys type" />
-      <ComboBox fx:id="analysysComboBox" layoutX="600.0" layoutY="42.0" prefWidth="150.0" />
-      <Label layoutX="497.0" layoutY="124.0" text="Select period" />
-      <ComboBox fx:id="periodComboBox" layoutX="600.0" layoutY="120.0" prefWidth="150.0" />
+      </LineChart>
+      <Button fx:id="clearButton" layoutX="380.0" layoutY="677.0" mnemonicParsing="false" onAction="#clearLineChart" text="Clear" />
    </children>
 </AnchorPane>
