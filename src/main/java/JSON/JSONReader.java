@@ -2,6 +2,8 @@ package JSON;
 
 
 
+import GUI.Controller;
+import javafx.scene.control.Alert;
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +18,8 @@ import java.util.Arrays;
 
 public class JSONReader {
 
+    public static boolean isError = false;
+
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -26,15 +30,29 @@ public class JSONReader {
     }
 
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
+        InputStream is = null;
+        JSONObject json = null;
         try {
+            is = new URL(url).openStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
+            json = new JSONObject(jsonText);
             return json;
-        } finally {
+        }catch (FileNotFoundException e){
+            throwError("Nie ma odpowiednich danych");
+            isError = true;
+            return null;
+
+        }
+        finally{
             is.close();
         }
+    }
+
+    private static void throwError(String message) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setContentText(message);
+        errorAlert.showAndWait();
     }
 
     public static void main(String[] args) throws IOException, JSONException {
@@ -94,39 +112,41 @@ public class JSONReader {
         LocalDate.now();
         JSONObject json;
         double[] value = new double[365];
+        String jsonUrl = null;
 
         switch(period) {
             case "Jeden Tydzien":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(1) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(1) + "/" + LocalDate.now() + "/?format=json");
                 break;
 
             case "Dwa Tygodnie":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(2) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(2) + "/" + LocalDate.now() + "/?format=json");
                 break;
 
             case "Jeden Miesiac":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(1) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(1) + "/" + LocalDate.now() + "/?format=json");
                 break;
 
             case "Jeden Kwartal":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(3) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(3) + "/" + LocalDate.now() + "/?format=json");
                 break;
+
             case "Pol Roku":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(6) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(6) + "/" + LocalDate.now() + "/?format=json");
                 break;
+
             case "Jeden Rok":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusYears(1) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusYears(1) + "/" + LocalDate.now() + "/?format=json");
                 break;
         }
 
+
+        json = readJsonFromUrl(jsonUrl);
+        value = getDoubles(table, json);
         return value;
     }
+
+
 
     private static double[] getDoubles(char table, JSONObject json) throws JSONException {
         double[] value;

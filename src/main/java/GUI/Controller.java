@@ -12,9 +12,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import org.json.JSONException;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+//import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
+
+//import java.awt.Button;
+//import java.awt.Label;
+//import java.awt.TextField;
 import java.io.IOException;
 
 public class Controller {
@@ -72,7 +79,9 @@ public class Controller {
         analysysComboBox.setItems(options);
 
         analysysComboBox.setOnAction(event-> {
+            clearData();
             setAnalysysValueComboBox();
+
         });
     }
 
@@ -137,6 +146,7 @@ public class Controller {
                         "B",
                         "C"
                 );
+
         groupComboBox.setItems(options);
         groupComboBox.setOnAction(event -> {
             try {
@@ -145,13 +155,22 @@ public class Controller {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
+            }finally {
+                checkGroup();
             }
         });
 
     }
 
+    private void checkGroup() {
+        if(JSONReader.isError == true)
+            clearData();
+        JSONReader.isError=false;
+    }
+
 
     private void showButtonClicked() throws IOException, JSONException {
+        checkGroup();
         showButton.setVisible(true);
         showGraph();
         if(analysysComboBox.getValue().equals("Wyznaczenie ilości sesji")){
@@ -165,7 +184,8 @@ public class Controller {
             calculateChange();
         }
 
-        showButton.setOnAction(event -> {showAnswerTextField();});
+         showButton.setOnAction(event -> {showAnswerTextField();});
+
 
     }
 
@@ -245,7 +265,7 @@ public class Controller {
     }
 
     @FXML
-    private void clearLineChart(ActionEvent event){
+    private void clearLineChart(){
 
         lineChart.getData().clear();
 
@@ -276,8 +296,18 @@ public class Controller {
         groupLabel.setVisible(false);
         showButton.setVisible(false);
         answerTextField.setVisible(false);
+        System.out.println("UnVisible");
+    }
+
+    public void clearData(){
+        groupComboBox.setValue(null);
+        periodComboBox.setValue(null);
+        currencyComboBox.setValue(null);
+        analysysValueComboBox.setValue(null);
+        clearLineChart();
 
 
+        makeUnVisible();
     }
 
     private void makePeriodComboBoxVisible() {
