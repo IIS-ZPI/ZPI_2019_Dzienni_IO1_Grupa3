@@ -11,7 +11,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key: grupa3
-  file: /home/travis/build/IIS-ZPI/ZPI_2019_Dzienni_IO1_Grupa3/target/ZPI_2019_Dzienni_IO1_Grupa3-1.0-SNAPSHOT.jar
+  file: /home/travis/build/IIS-ZPI/ZPI_2019_Dzienni_IO1_Grupa3/target/zad2_poprawione-1.0-SNAPSHOT.jar
   skip_cleanup: true
   on:
     branch: Release
