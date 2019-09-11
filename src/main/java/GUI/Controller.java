@@ -12,9 +12,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import org.json.JSONException;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+//import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
+
+//import java.awt.Button;
+//import java.awt.Label;
+//import java.awt.TextField;
 import java.io.IOException;
 
 public class Controller {
@@ -72,7 +79,9 @@ public class Controller {
         analysysComboBox.setItems(options);
 
         analysysComboBox.setOnAction(event-> {
+            clearData();
             setAnalysysValueComboBox();
+
         });
     }
 
@@ -92,6 +101,7 @@ public class Controller {
         }
         analysysValueComboBox.setItems(options);
         analysysValueComboBox.setOnAction(event -> {
+            clearLineChart();
             setCurencyComboBox();
         });
 
@@ -108,6 +118,7 @@ public class Controller {
                     );
             currencyComboBox.setItems(options);
             currencyComboBox.setOnAction(event-> {
+                clearLineChart();
                 setPeriodComboBox();
             });
     }
@@ -115,16 +126,22 @@ public class Controller {
     public void setPeriodComboBox() {
         makePeriodComboBoxVisible();
         ObservableList<String> options =
-                FXCollections.observableArrayList(
-                        "Jeden Tydzien",
-                        "Dwa Tygodnie",
-                        "Jeden Miesiac",
-                        "Jeden Kwartal",
-                        "Pol Roku",
-                        "Jeden Rok"
-                );
+                FXCollections.observableArrayList();
+        if(analysysComboBox.getValue().equals("Rozkład zmian")){
+            options.setAll("Jeden Miesiac", "Jeden Kwartal");
+        }
+        else{
+            options.setAll("Jeden Tydzien",
+                    "Dwa Tygodnie",
+                    "Jeden Miesiac",
+                    "Jeden Kwartal",
+                    "Pol Roku",
+                    "Jeden Rok");
+        }
+
         periodComboBox.setItems(options);
         periodComboBox.setOnAction(event-> {
+            clearLineChart();
             setGroupComboBox();
         });
     }
@@ -137,21 +154,38 @@ public class Controller {
                         "B",
                         "C"
                 );
+
         groupComboBox.setItems(options);
         groupComboBox.setOnAction(event -> {
+            clearLineChart();
             try {
-                showButtonClicked();
+                if(!analysysComboBox.getValue().equals("Rozkład zmian"))
+                    showButtonClicked();
+                else
+                    showGraph();
             }  catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
+            }finally {
+                checkGroup();
             }
         });
 
     }
 
+    private void checkGroup() {
+        if(JSONReader.isError == true){
+            clearData();
+            analysysComboBox.setValue(null);
+        }
+
+        JSONReader.isError=false;
+    }
+
 
     private void showButtonClicked() throws IOException, JSONException {
+        checkGroup();
         showButton.setVisible(true);
         showGraph();
         if(analysysComboBox.getValue().equals("Wyznaczenie ilości sesji")){
@@ -165,7 +199,8 @@ public class Controller {
             calculateChange();
         }
 
-        showButton.setOnAction(event -> {showAnswerTextField();});
+         showButton.setOnAction(event -> {showAnswerTextField();});
+
 
     }
 
@@ -221,7 +256,9 @@ public class Controller {
         table = tableValue.charAt(0);
         currency = (String) currencyComboBox.getValue();
         period = (String) periodComboBox.getValue();
-        double[] value = new double[365];
+        double[] value;
+        xAxis.setLabel("Group");
+        yAxis.setLabel("Value");
         value = JSONReader.getValues(table,currency,period);
         for(int y=0;y<value.length;y++){
             System.out.println(value[y]);
@@ -229,10 +266,31 @@ public class Controller {
 
         XYChart.Series series = new XYChart.Series();
         series.setName(tableValue);
-        for(int i = 0;i<value.length;i++){
-            String q = Integer.toString(i);
-            series.getData().add(new XYChart.Data(q,value[i]));
-        }
+       if(periodComboBox.getValue().equals("Jeden Rok")){
+           for(int i = 0;i<value.length;i+=10){
+               String q = Integer.toString(i);
+               series.getData().add(new XYChart.Data(q,value[i]));
+           }
+       }
+       else if(periodComboBox.getValue().equals("Pol Roku")){
+            for(int i = 0;i<value.length;i+=5){
+                String q = Integer.toString(i);
+                series.getData().add(new XYChart.Data(q,value[i]));
+            }
+       }
+       else if(periodComboBox.getValue().equals("Jeden Kwartal")){
+           for(int i = 0;i<value.length;i+=3){
+               String q = Integer.toString(i);
+               series.getData().add(new XYChart.Data(q,value[i]));
+           }
+       }
+       else{
+           for(int i = 0;i<value.length;i++){
+               String q = Integer.toString(i);
+               series.getData().add(new XYChart.Data(q,value[i]));
+           }
+       }
+
        /* series.getData().add(new XYChart.Data("1",13));
         series.getData().add(new XYChart.Data("2",20));
         series.getData().add(new XYChart.Data("3",17));
@@ -245,7 +303,7 @@ public class Controller {
     }
 
     @FXML
-    private void clearLineChart(ActionEvent event){
+    private void clearLineChart(){
 
         lineChart.getData().clear();
 
@@ -276,8 +334,19 @@ public class Controller {
         groupLabel.setVisible(false);
         showButton.setVisible(false);
         answerTextField.setVisible(false);
+        System.out.println("UnVisible");
+    }
+
+    public void clearData(){
+        groupComboBox.setValue(null);
+        periodComboBox.setValue(null);
+        currencyComboBox.setValue(null);
+        analysysValueComboBox.setValue(null);
+        //analysysComboBox.setValue(null);
+        clearLineChart();
 
 
+        makeUnVisible();
     }
 
     private void makePeriodComboBoxVisible() {
