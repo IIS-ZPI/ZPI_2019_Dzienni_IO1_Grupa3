@@ -25,9 +25,9 @@ public class JSONReaderTest {
     }
     @Test public void getValue() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(3.754, jsonReader.getValue('A',"usd"),DELTA);
+        assertEquals(3.9324, jsonReader.getValue('A',"usd"),DELTA);
         assertEquals(4.011, jsonReader.getValue('B',"usd"),DELTA);
-        assertEquals(3.7357, jsonReader.getValue('C',"usd"),DELTA);
+        assertEquals(3.9286000000000003, jsonReader.getValue('C',"usd"),DELTA);
     }
 
     @Test public void getValues() throws IOException, JSONException {
@@ -37,12 +37,12 @@ public class JSONReaderTest {
 
     @Test public void calculateGrowthSession() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(2, jsonReader.calculateGrowthSession('A',"usd","Jeden Tydzien"),DELTA);
+        assertEquals(1, jsonReader.calculateGrowthSession('A',"usd","Jeden Tydzien"),DELTA);
     }
 
     @Test public void calculateDownwardSession() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(2, jsonReader.calculateDownwardSession('A',"usd","Jeden Tydzien"),DELTA);
+        assertEquals(4, jsonReader.calculateDownwardSession('A',"usd","Jeden Tydzien"),DELTA);
     }
 
     @Test public void calculateUnchangedSession() throws IOException, JSONException {
@@ -52,22 +52,22 @@ public class JSONReaderTest {
 
     @Test public void calculateMedian() throws IOException, JSONException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(3.754, jsonReader.calculateMedian('A',"usd","Jeden Tydzien"),DELTA);
+        assertEquals(3.93195, jsonReader.calculateMedian('A',"usd","Jeden Tydzien"),DELTA);
     }
 
     @Test public void calculateDominant() throws IOException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(3.8374, jsonReader.calculateDominant('A',"usd","JedenMiesiac"),DELTA);
+        assertEquals(3.8711, jsonReader.calculateDominant('A',"usd","Jeden Miesiac"),DELTA);
     }
 
     @Test public void calculateStdDev() throws IOException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(0.03629084294123354, jsonReader.calculateStdDev('A',"usd","JedenMiesiac"),DELTA);
+        assertEquals(0.0294072792619969, jsonReader.calculateStdDev('A',"usd","Jeden Miesiac"),DELTA);
     }
 
     @Test public void calculateVariationCoefficient() throws IOException {
         JSONReader jsonReader = new JSONReader();
-        assertEquals(0.0095573555465699, jsonReader.calculateVariationCoefficient('A',"usd","JedenMiesiac"),DELTA);
+        assertEquals(0.00747686183322603, jsonReader.calculateVariationCoefficient('A',"usd","Jeden Miesiac"),DELTA);
     }
 
 }
