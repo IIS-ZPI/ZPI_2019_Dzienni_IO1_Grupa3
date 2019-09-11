@@ -3,7 +3,11 @@ install: true
 dist: trusty
 jdk:
    - oraclejdk8
-  
+stages:
+      - compile
+      - test
+      - name: deploy
+        if: branch = release  
 script:
   - mvn install
 
