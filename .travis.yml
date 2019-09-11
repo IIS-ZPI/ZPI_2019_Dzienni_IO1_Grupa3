@@ -18,7 +18,7 @@ before_deploy:
       - git tag $TRAVIS_TAG
 deploy:
   provider: releases
-  api_key: grupa3
+  api_key: $grupa3
   file: /home/travis/build/IIS-ZPI/ZPI_2019_Dzienni_IO1_Grupa3/target/zad2_poprawione-1.0-SNAPSHOT.jar
   skip_cleanup: true
   on:
