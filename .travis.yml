@@ -5,7 +5,6 @@ jdk:
   
 script:
   - mvn install
-  - mvn clean package -DskipTests=true
 
 before_deploy:
       - git config --local user.name "209450"
