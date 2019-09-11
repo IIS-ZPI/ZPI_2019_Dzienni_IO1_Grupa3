@@ -2,6 +2,8 @@ package JSON;
 
 
 
+import GUI.Controller;
+import javafx.scene.control.Alert;
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +18,8 @@ import java.util.Arrays;
 
 public class JSONReader {
 
+    public static boolean isError = false;
+
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -26,15 +30,29 @@ public class JSONReader {
     }
 
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
+        InputStream is = null;
+        JSONObject json = null;
         try {
+            is = new URL(url).openStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
+            json = new JSONObject(jsonText);
             return json;
-        } finally {
+        }catch (FileNotFoundException e){
+            throwError("Nie ma odpowiednich danych");
+            isError = true;
+            return null;
+
+        }
+        finally{
             is.close();
         }
+    }
+
+    private static void throwError(String message) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setContentText(message);
+        errorAlert.showAndWait();
     }
 
     public static void main(String[] args) throws IOException, JSONException {
@@ -54,11 +72,19 @@ public class JSONReader {
         //System.out.println(getValues('A',"usd","JedenRok").length);
         /*System.out.println(calculateGrowthSession('A',"usd","JedenTydzien"));
         System.out.println(calculateDownwardSession('A',"usd","JedenTydzien"));
-        System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));*/
-        System.out.println(calculateMedian('A',"usd","JedenTydzien"));
-        System.out.println(calculateDominant('A',"usd","JedenMiesiac"));
+
+        System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));
+        //System.out.println(calculateMedian('A',"usd","JedenTydzien"));
+        //System.out.println(calculateDominant('A',"usd","JedenMiesiac"));
         System.out.println(calculateStdDev('A',"usd","JedenMiesiac"));
-        System.out.println(calculateVariationCoefficient('A',"usd","JedenMiesiac"));
+        //System.out.println(calculateVariationCoefficient('A',"usd","JedenMiesiac"));*/
+
+       // System.out.println(calculateUnchangedSession('A',"usd","JedenRok"));*/
+       // System.out.println(calculateMedian('A',"usd","JedenTydzien"));
+       // System.out.println(calculateDominant('A',"usd","JedenMiesiac"));
+      //  System.out.println(calculateStdDev('A',"usd","JedenMiesiac"));
+       // System.out.println(calculateVariationCoefficient('A',"usd","JedenMiesiac"));
+
     }
 
     public static double getValue(char table, String currency) throws IOException, JSONException {
@@ -86,41 +112,43 @@ public class JSONReader {
         LocalDate.now();
         JSONObject json;
         double[] value = new double[365];
+        String jsonUrl = null;
 
         switch(period) {
-            case "JedenTydzien":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(1) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+            case "Jeden Tydzien":
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(1) + "/" + LocalDate.now() + "/?format=json");
                 break;
 
-            case "DwaTygodnie":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(2) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+            case "Dwa Tygodnie":
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusWeeks(2) + "/" + LocalDate.now() + "/?format=json");
                 break;
 
-            case "JedenMiesiac":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(1) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+            case "Jeden Miesiac":
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(1) + "/" + LocalDate.now() + "/?format=json");
                 break;
 
-            case "JedenKwartal":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(3) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+            case "Jeden Kwartal":
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(3) + "/" + LocalDate.now() + "/?format=json");
                 break;
-            case "PolRoku":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(6) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+
+            case "Pol Roku":
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusMonths(6) + "/" + LocalDate.now() + "/?format=json");
                 break;
-            case "JedenRok":
-                json = readJsonFromUrl("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusYears(1) + "/" + LocalDate.now() + "/?format=json");
-                value = getDoubles(table, json);
+
+            case "Jeden Rok":
+                jsonUrl = ("http://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + LocalDate.now().minusYears(1) + "/" + LocalDate.now() + "/?format=json");
                 break;
         }
 
+
+        json = readJsonFromUrl(jsonUrl);
+        value = getDoubles(table, json);
         return value;
     }
 
-    private static double[] getDoubles(char table, JSONObject json) {
+
+
+    private static double[] getDoubles(char table, JSONObject json) throws JSONException {
         double[] value;
         String valueInString;
         JSONArray jsonarray = (JSONArray) json.get("rates");
@@ -144,7 +172,7 @@ public class JSONReader {
         return value;
     }
 
-    public static int calculateGrowthSession(char table, String currency, String period ) throws IOException {
+    public static int calculateGrowthSession(char table, String currency, String period ) throws IOException, JSONException {
 
         int sessionAmount = 0;
 
@@ -161,7 +189,7 @@ public class JSONReader {
         return  sessionAmount;
     }
 
-    public static int calculateDownwardSession(char table, String currency, String period ) throws IOException {
+    public static int calculateDownwardSession(char table, String currency, String period ) throws IOException, JSONException {
 
         int sessionAmount = 0;
 
@@ -178,7 +206,7 @@ public class JSONReader {
         return  sessionAmount;
     }
 
-    public static int calculateUnchangedSession(char table, String currency, String period ) throws IOException {
+    public static int calculateUnchangedSession(char table, String currency, String period ) throws IOException, JSONException {
 
         int sessionAmount = 0;
 
@@ -195,7 +223,7 @@ public class JSONReader {
         return  sessionAmount;
     }
 
-    public static double calculateMedian(char table, String currency, String period)throws IOException {
+    public static double calculateMedian(char table, String currency, String period) throws IOException, JSONException {
 
         double[] value = getValues(table, currency, period);
         Arrays.sort(value);
@@ -209,7 +237,7 @@ public class JSONReader {
 
     }
 
-    public static double calculateDominant(char table, String currency, String period) throws IOException{
+    public static double calculateDominant(char table, String currency, String period) throws IOException, JSONException {
 
         double[] value = getValues(table, currency, period);
 
@@ -238,7 +266,7 @@ public class JSONReader {
         return sum / m.length;
     }
 
-    public static double calculateStdDev(char table, String currency, String period) throws IOException {
+    public static double calculateStdDev(char table, String currency, String period) throws IOException, JSONException {
         double[] value = getValues(table, currency, period);
         double mean = calculateMean(value);
         double temp = 0;
@@ -247,7 +275,7 @@ public class JSONReader {
         return Math.sqrt(temp/(value.length-1));
     }
 
-    public static double calculateVariationCoefficient(char table, String currency, String period) throws IOException {
+    public static double calculateVariationCoefficient(char table, String currency, String period) throws IOException, JSONException {
         double[] value = getValues(table, currency, period);
         double stdDev = calculateStdDev(table, currency, period);
         double mean = calculateMean(value);
